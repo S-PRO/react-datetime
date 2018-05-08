@@ -72,7 +72,6 @@ var DateTimePickerTime = onClickOutside(
 							{
 								key: 'up',
 								className: 'rdtBtn',
-								onTouchStart: this.onStartClicking('increase', type),
 								onMouseDown: this.onStartClicking('increase', type),
 								onContextMenu: this.disableContextMenu
 							},
@@ -88,7 +87,6 @@ var DateTimePickerTime = onClickOutside(
 							{
 								key: 'do',
 								className: 'rdtBtn',
-								onTouchStart: this.onStartClicking('decrease', type),
 								onMouseDown: this.onStartClicking('decrease', type),
 								onContextMenu: this.disableContextMenu
 							},
