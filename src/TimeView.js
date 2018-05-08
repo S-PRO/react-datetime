@@ -72,8 +72,8 @@ var DateTimePickerTime = onClickOutside(
 							{
 								key: 'up',
 								className: 'rdtBtn',
-								onTouchEnd: this.onStartClicking('increase', type),
-								onMouseUp: this.onStartClicking('increase', type),
+								onTouchStart: this.onStartClicking('increase', type),
+								onMouseDown: this.onStartClicking('increase', type),
 								onContextMenu: this.disableContextMenu
 							},
 							'▲'
@@ -88,8 +88,8 @@ var DateTimePickerTime = onClickOutside(
 							{
 								key: 'do',
 								className: 'rdtBtn',
-								onTouchEnd: this.onStartClicking('decrease', type),
-								onMouseUp: this.onStartClicking('decrease', type),
+								onTouchStart: this.onStartClicking('decrease', type),
+								onMouseDown: this.onStartClicking('decrease', type),
 								onContextMenu: this.disableContextMenu
 							},
 							'▼'
@@ -110,8 +110,7 @@ var DateTimePickerTime = onClickOutside(
 						{
 							key: 'up',
 							className: 'rdtBtn',
-							onTouchEnd: this.onStartClicking('toggleDayPart', 'hours'),
-							onMouseUp: this.onStartClicking('toggleDayPart', 'hours'),
+							onMouseDown: this.onStartClicking('toggleDayPart', 'hours'),
 							onContextMenu: this.disableContextMenu
 						},
 						'▲'
@@ -126,8 +125,7 @@ var DateTimePickerTime = onClickOutside(
 						{
 							key: 'do',
 							className: 'rdtBtn',
-							onTouchEnd: this.onStartClicking('toggleDayPart', 'hours'),
-							onMouseUp: this.onStartClicking('toggleDayPart', 'hours'),
+							onMouseDown: this.onStartClicking('toggleDayPart', 'hours'),
 							onContextMenu: this.disableContextMenu
 						},
 						'▼'
@@ -283,12 +281,15 @@ var DateTimePickerTime = onClickOutside(
 				me.setState(update);
 
 				me.timer = setTimeout(function() {
-					update[type] = me[action](type);
-					me.setState(update);
+					me.increaseTimer = setInterval(function() {
+						update[type] = me[action](type);
+						me.setState(update);
+					}, 70);
 				}, 500);
 
 				me.mouseUpListener = function() {
 					clearTimeout(me.timer);
+					clearInterval(me.increaseTimer);
 					me.props.setTime(type, me.state[type]);
 					document.body.removeEventListener('mouseup', me.mouseUpListener);
 					document.body.removeEventListener('touchend', me.mouseUpListener);
