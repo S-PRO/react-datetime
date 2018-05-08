@@ -72,7 +72,8 @@ var DateTimePickerTime = onClickOutside(
 							{
 								key: 'up',
 								className: 'rdtBtn',
-								onClick: this.onStartClicking('increase', type),
+								onTouchEnd: this.onStartClicking('increase', type),
+								onMouseUp: this.onStartClicking('increase', type),
 								onContextMenu: this.disableContextMenu
 							},
 							'▲'
@@ -87,7 +88,8 @@ var DateTimePickerTime = onClickOutside(
 							{
 								key: 'do',
 								className: 'rdtBtn',
-								onClick: this.onStartClicking('decrease', type),
+								onTouchEnd: this.onStartClicking('decrease', type),
+								onMouseUp: this.onStartClicking('decrease', type),
 								onContextMenu: this.disableContextMenu
 							},
 							'▼'
@@ -108,7 +110,8 @@ var DateTimePickerTime = onClickOutside(
 						{
 							key: 'up',
 							className: 'rdtBtn',
-							onClick: this.onStartClicking('toggleDayPart', 'hours'),
+							onTouchEnd: this.onStartClicking('toggleDayPart', 'hours'),
+							onMouseUp: this.onStartClicking('toggleDayPart', 'hours'),
 							onContextMenu: this.disableContextMenu
 						},
 						'▲'
@@ -123,7 +126,8 @@ var DateTimePickerTime = onClickOutside(
 						{
 							key: 'do',
 							className: 'rdtBtn',
-							onClick: this.onStartClicking('toggleDayPart', 'hours'),
+							onTouchEnd: this.onStartClicking('toggleDayPart', 'hours'),
+							onMouseUp: this.onStartClicking('toggleDayPart', 'hours'),
 							onContextMenu: this.disableContextMenu
 						},
 						'▼'
@@ -279,20 +283,19 @@ var DateTimePickerTime = onClickOutside(
 				me.setState(update);
 
 				me.timer = setTimeout(function() {
-					me.increaseTimer = setInterval(function() {
-						update[type] = me[action](type);
-						me.setState(update);
-					}, 70);
+					update[type] = me[action](type);
+					me.setState(update);
 				}, 500);
 
 				me.mouseUpListener = function() {
 					clearTimeout(me.timer);
-					clearInterval(me.increaseTimer);
 					me.props.setTime(type, me.state[type]);
-					document.body.removeEventListener('click', me.mouseUpListener);
+					document.body.removeEventListener('mouseup', me.mouseUpListener);
+					document.body.removeEventListener('touchend', me.mouseUpListener);
 				};
 
-				document.body.addEventListener('click', me.mouseUpListener);
+				document.body.addEventListener('mouseup', me.mouseUpListener);
+				document.body.addEventListener('touchend', me.mouseUpListener);
 			};
 		},
 
